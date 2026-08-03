@@ -1047,6 +1047,40 @@ giftBox.addEventListener('click', () => {
 });
 
 /* ============================================================
+   PAUSE MUSIK SAAT TAB HIDDEN / MINIMIZE
+   ============================================================ */
+const bgMusic = document.getElementById('bgMusic');
+const musicToggle = document.getElementById('musicToggle');
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    // Tab di-background / minimize → pause musik
+    if (bgMusic && !bgMusic.paused) {
+      bgMusic.pause();
+      // Update tombol biar user tahu musiknya lagi pause
+      if (musicToggle) {
+        musicToggle.classList.remove('is-playing');
+        musicToggle.setAttribute('aria-pressed', 'false');
+        const label = musicToggle.querySelector('.music-toggle__label');
+        if (label) label.textContent = 'Puter musiknya dulu?';
+      }
+    }
+  }
+  else {
+    if (bgMusic && bgMusic.paused) {
+      bgMusic.play().catch(() => {});
+      if (musicToggle) {
+        musicToggle.classList.add('is-playing');
+        musicToggle.setAttribute('aria-pressed', 'true');
+        const label = musicToggle.querySelector('.music-toggle__label');
+        if (label) label.textContent = 'Matiin musik';
+      }
+    }
+  }
+  
+});
+
+/* ============================================================
    GALERI — lightbox on click
    ============================================================ */
 const lightbox = document.getElementById('lightbox');
