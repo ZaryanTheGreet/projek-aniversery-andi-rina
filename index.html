@@ -689,6 +689,22 @@ footer .credit{ font-size:0.78rem; opacity:0.55; font-family: var(--font-mono); 
   font-size:0.92rem;
   transition: transform 0.2s ease;
 }
+/* Kondisi Awal: Musik mati / belum diputar */
+#musicToggle #musicIcon {
+  display: none; /* Ikon musik sembunyi karena belum play */
+}
+#musicToggle #muteIcon {
+  display: inline-block; /* Ikon senyap muncul */
+}
+
+/* Kondisi Aktif: Ketika tombol punya class .is-playing */
+#musicToggle.is-playing #musicIcon {
+  display: inline-block; /* Ikon musik muncul saat lagu jalan */
+}
+#musicToggle.is-playing #muteIcon {
+  display: none; /* Ikon senyap sembunyi */
+}
+
 .spotify-link:hover{ transform: translateY(-2px); }
 </style>
 </head>
@@ -845,17 +861,28 @@ footer .credit{ font-size:0.78rem; opacity:0.55; font-family: var(--font-mono); 
      TOMBOL MUSIK — driver vibe utama, jalan dari awal scroll
      GANTI: src audio dengan lagu pilihan (lihat catatan hak cipta di bawah)
      ============================================================ -->
-<button class="music-toggle" id="musicToggle" type="button" aria-label="Putar musik" aria-pressed="false">
-  <span class="music-toggle__label">Puter musiknya dulu?</span>
-  <svg id="musicIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M9 18V6l10-2v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="6.5" cy="18" r="2.5" stroke="currentColor" stroke-width="1.6"/>
-    <circle cx="16.5" cy="16" r="2.5" stroke="currentColor" stroke-width="1.6"/>
+<button class="music-toggle" id="musicToggle" type="button" aria-label="Putar musik" aria-pressed="false"> 
+  <span class="music-toggle__label">Puter musiknya dulu?</span> 
+  
+  <!-- Ikon Musik (Aktif) -->
+  <svg id="musicIcon" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org"> 
+    <path d="M9 18V6l10-2v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/> 
+    <circle cx="6.5" cy="18" r="2.5" stroke="currentColor" stroke-width="1.6"/> 
+    <circle cx="16.5" cy="16" r="2.5" stroke="currentColor" stroke-width="1.6"/> 
   </svg>
-</button>
-<audio id="bgMusic" loop preload="none">
-  <source src="lagu-aniversery.mp3" type="audio/mpeg">
+
+  <!-- Ikon Mute (Senyap) -->
+  <svg id="muteIcon" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+    <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M23 9L17 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17 9L23 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button> 
+
+<audio id="bgMusic" loop preload="none"> 
+  <source src="lagu-aniversery.mp3" type="audio/mpeg"> 
 </audio>
+
 
 <script>
 /* ============================================================
