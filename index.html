@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>1 Tahun Bersama — Andi & Rina</title>
-<link rel="icon" type="image/png" href="favicon-webRey.png"></link>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Caveat:wght@500;600;700&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -1047,40 +1046,6 @@ giftBox.addEventListener('click', () => {
 });
 
 /* ============================================================
-   PAUSE MUSIK SAAT TAB HIDDEN / MINIMIZE
-   ============================================================ */
-const bgMusic = document.getElementById('bgMusic');
-const musicToggle = document.getElementById('musicToggle');
-
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    // Tab di-background / minimize → pause musik
-    if (bgMusic && !bgMusic.paused) {
-      bgMusic.pause();
-      // Update tombol biar user tahu musiknya lagi pause
-      if (musicToggle) {
-        musicToggle.classList.remove('is-playing');
-        musicToggle.setAttribute('aria-pressed', 'false');
-        const label = musicToggle.querySelector('.music-toggle__label');
-        if (label) label.textContent = 'Puter musiknya dulu?';
-      }
-    }
-  }
-  else {
-    if (bgMusic && bgMusic.paused) {
-      bgMusic.play().catch(() => {});
-      if (musicToggle) {
-        musicToggle.classList.add('is-playing');
-        musicToggle.setAttribute('aria-pressed', 'true');
-        const label = musicToggle.querySelector('.music-toggle__label');
-        if (label) label.textContent = 'Matiin musik';
-      }
-    }
-  }
-  
-});
-
-/* ============================================================
    GALERI — lightbox on click
    ============================================================ */
 const lightbox = document.getElementById('lightbox');
@@ -1197,6 +1162,29 @@ const io = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.15 });
 revealItems.forEach(el => io.observe(el));
+
+/* ============================================================
+   AUTO-PAUSE MUSIK PAS USER NINGGALIN TAB / MINIMIZE APP
+   ============================================================ */
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    // User pindah ke app lain / minimize / lock screen
+    if (!bgMusic.paused) {
+      bgMusic.dataset.wasPlaying = 'true'; // tandain bahwa tadi lagi play
+      bgMusic.pause();
+      musicToggle.classList.remove('is-playing');
+      musicToggle.querySelector('.music-toggle__label').textContent = 'Puter musiknya dulu?';
+    }
+  } else {
+    // User balik lagi ke tab ini
+    if (bgMusic.dataset.wasPlaying === 'true') {
+      bgMusic.play().catch(() => {});
+      musicToggle.classList.add('is-playing');
+      musicToggle.querySelector('.music-toggle__label').textContent = 'Matiin musik';
+      bgMusic.dataset.wasPlaying = '';
+    }
+  }
+});
 </script>
 
 </body>
